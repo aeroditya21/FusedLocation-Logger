@@ -36,9 +36,18 @@ public class LocationService extends IntentService {
 
 			// Write location, accuracy, battery level to LOG FILE
 			Log2File.log(data.toString());
-
+			
+			//	Update application state in Trepn Profiler
+			SendAppStatetoProfiler((int) location.getAccuracy(), "Loc Accuracy");
 		}
 
+	}
+
+	private void SendAppStatetoProfiler(int accuracy, String desc) {
+		Intent stateUpdate = new Intent("com.quicinc.Trepn.UpdateAppState"); 
+		stateUpdate.putExtra("com.quicinc.Trepn.UpdateAppState.Value", accuracy); 
+		stateUpdate.putExtra("com.quicinc.Trepn.UpdateAppState.Value.Desc", desc); 
+		sendBroadcast(stateUpdate);		
 	}
 
 }
